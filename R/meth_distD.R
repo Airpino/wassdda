@@ -557,14 +557,9 @@ setMethod(
     # % distribution o1
 
     # Check for errors
-    if (p < 0 || p > 1) stop("p must be a value between 0 and 1")
+    if (any(p < 0 | p > 1)) stop("p must be a value between 0 and 1")
 
-    if (p <= 0) {
-      return(q = object@x[1])
-    }
-    if (p >= 1) {
-      return(q = object@x[length(object@x)])
-    }
+
 
     qua<-e1071::qdiscrete(p, c(object@p[1],diff(object@p)), values = object@x)
     return(qua)
@@ -689,6 +684,53 @@ setMethod(
     }
   }
 )
+
+# L2 Wasserstein distance between two distributions and related results ----
+#' Method \code{WassSqDistDH}
+#' @name WassSqDistDH
+#' @rdname WassSqDistDH-methods
+#' @exportMethod WassSqDistDH
+setGeneric("WassSqDistDH", function(object1, object2, ...) standardGeneric("WassSqDistDH")) # Wasserstein distance between two distributions
+setMethod(
+  f = "WassSqDistDH", signature = c(object1 = "distributionD", object2 = "distributionH"),
+  # Computes the L2 Wasserstein squared distance between two distributions where one is Discrete and one is a Histogram
+  # INPUT: object1 and object2 -  distributionD and distributionH objects
+  # OUTPUT: A list containing the distance and its decomposition in three parts (position, size and shape)
+  function(object1 = object1, object2 = object2, details = FALSE) {
+    a<-object1@x
+    b<-object2@x
+    pa<-c(object1@p)
+    pb<-c(object2@p)
+    #merge the p
+    p_all<-sort(unique(c(pa,pb)))
+    a_new<-compQ(object1,p = p_all)
+    b_new<-sapply(p_all,FUN = function(x)HistDAWass::compQ(object2,x))
+    ww<-diff(p_all)
+    amc<-b_new[1:(length(b_new)-1)]-a_new[1:(length(b_new)-1)]
+    bma<-diff(b_new)
+    D<-sum((amc^2+1/3*bma+amc*bma)*ww)
+
+    browser()
+
+    if (details) {
+      DC <- (object1@m - object2@m)^2
+      DS <- (object1@s - object2@s)^2
+
+      DR <- ifelse(abs(D - DC - DS) < 1e-30, yes = 0, no = abs(D - DC - DS))
+      rho <- 1-DR/(2*object1@s*object2@s)### non funziona qui ---------
+      if (rho < 0) rho <- 0
+      resu <- c(D, DC, DS, DR, rho)
+      names(resu) <- c("SQ_W_dist", "POSITION", "SIZE", "SHAPE", "rQQ")
+      return(resu)
+    }
+    else {
+      return(as.numeric(D))
+    }
+  }
+)
+
+
+
 
 #' Method \code{dotpW}
 #' @name dotpW
