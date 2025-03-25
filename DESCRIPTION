@@ -21,6 +21,7 @@ Imports:
     FactoMineR,
     MASS,
     ggplot2,
-    dplyr,
+    dplyr
+Depends:
     HistDAWass
 LinkingTo: Rcpp

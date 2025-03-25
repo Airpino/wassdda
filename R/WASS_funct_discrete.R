@@ -1,5 +1,4 @@
 # FUNCTION FOR DISCRETE DISTRIBUTIONS
-Rcpp::sourceCpp("C:/Users/anton/Il mio Drive/CROCETTA CUSTOMER/R_code/FUNS.cpp")
 library(tidyverse)
 library(transport)
 library(matrixStats)
@@ -10,10 +9,10 @@ means_stds_NestTibb<-function(MAT,labels=1){
   res2<-matrix(0,nrow (MAT),ncol(MAT)-length(labels))
   for(i in 1:nrow(MAT)){
     c <- 0
-   
+
     for(j in 1:ncol(MAT)){
       if (j==labels){}else{
-        c <- c+1 
+        c <- c+1
         tmp_m=sum(MAT[[j]][[i]][[1]]*MAT[[j]][[i]][["freq"]])
         res[i,c]=tmp_m
         res2[i,c]=sqrt(sum((MAT[[j]][[i]][[1]])^2*MAT[[j]][[i]][["freq"]])-tmp_m^2)
@@ -39,7 +38,7 @@ means_stds_NestTibb_nol<-function(Tib){
     )
   })
   stds<-sqrt(stds-means^2)
-  return(list(means=means,stds=stds))    
+  return(list(means=means,stds=stds))
 }
 
 m_sd_skew_NestTibb_nol<-function(Tib){
@@ -58,7 +57,7 @@ m_sd_skew_NestTibb_nol<-function(Tib){
     st<-(x[[1]]-m)/s
     return(sum(st^3*x[["freq"]]))
   })})
-  return(list(means=means,stds=stds,skew=skew))    
+  return(list(means=means,stds=stds,skew=skew))
 }
 
 ### counts of each tibble-cell-distribution ----
@@ -84,9 +83,9 @@ COUNTS_NestTibb<-function(MAT,labels=1){
 corr_QQ_two_discrete_distr<-function(subM1,subM2,
                                      m1,m2,
                                      std1,std2){# Computes the rhoQQ from OT theory
-  require(transport)  
+  require(transport)
   # fake_cdf_1 <- round(subM1[,4],r)*(10^r)
-  # fake_freq_1<- c() 
+  # fake_freq_1<- c()
   # fake_cdf_2 <- round(subM2[,4],r)*(10^r)
   # tmp<-transport::wasserstein1d(unlist(subM1[,1]), unlist(subM2[,1]), p = 2, wa = subM1$freq, wb = subM2$freq)
   tmp<-Wass1d_discrete_2(unlist(subM1[,1]), unlist(subM2[,1]),  wa = subM1$freq, wb = subM2$freq)
@@ -100,9 +99,9 @@ corr_QQ_two_discrete_distr2<-function(subM1,subM2,
                                       m1,m2,
                                       std1,std2,
                                       r=3){# Computes the rhoQQ via approximation
-  
+
   fake_cdf_1 <- ceiling(unlist(subM1$cdf)*(10^r))
-  fake_freq_1<- c(fake_cdf_1[1],diff(fake_cdf_1)) 
+  fake_freq_1<- c(fake_cdf_1[1],diff(fake_cdf_1))
   fake_cdf_2 <- ceiling(unlist(subM2$cdf)*(10^r))
   fake_freq_2<- c(fake_cdf_2[1],diff(fake_cdf_2))
   v1<-numeric()
@@ -123,7 +122,7 @@ WD_rqq_discr<-function(d1,d2,m1,m2,s1,s2){#script per calcolare rhoQQ
   d1_dom<-extract_quantiles(d1,p=comm_cdf)
   d2_dom<-extract_quantiles(d2,p=comm_cdf)
   w=c(0,diff(comm_cdf))
-  
+
   XY<-sum(d1_dom*d2_dom*w)
 #  m1<-sum(d1$B1*d1$freq)
 #  m2<-sum(d2$B1*d2$freq)
@@ -148,7 +147,7 @@ WH.sum_two_dist_dicr<-function(d1,d2){
   w=c(0,diff(comm_cdf))
   dom<-d1_dom+d2_dom
   Ds<-data.frame(X=dom[-1],freq=w[-1],cdf=comm_cdf[-1])
-  
+
   return(Ds)
 }
 
@@ -170,7 +169,7 @@ mean_bargraph <- function(Tibble_VAR,
   }else{
     w<-w/sum(w)
   }
-  
+
   mean<-extract_quantiles(data[[1]][[1]],vector_of_cdf)*w[1]
   if(n>1){
     for(i in 2:n){
@@ -183,7 +182,7 @@ mean_bargraph <- function(Tibble_VAR,
 
 # a function for checking if it works properly (Can be deleted)
 mean_bargraph2 <- function(Tibble_VAR,w=1,rounddec=5){
-  
+
   n<-length(Tibble_VAR)
   vector_of_cdf <- numeric()
   for(i in 1:n){
@@ -195,7 +194,7 @@ mean_bargraph2 <- function(Tibble_VAR,w=1,rounddec=5){
   }else{
     w<-w/sum(w)
   }
-  
+
   mean<-extract_quantiles(Tibble_VAR[[1]],vector_of_cdf)*w[1]
   DFQ<-matrix(0,length(mean),n)
   DFQ[,1]<-extract_quantiles(Tibble_VAR[[1]],vector_of_cdf)
@@ -226,13 +225,13 @@ variance_Wass_discrete<-function(Tibble_VAR,
   if(!given_mean){
     mean_distr<-mean_bargraph (Tibble_VAR,w=w,rounddec=rounddec)
   }
-  
-  
+
+
   VV<-0
   for(i in 1:n){
-    #VV<-VV+((transport::wasserstein1d(unlist(Tibble_VAR[[i]][,1]), mean_distr[,1], p = 2, 
+    #VV<-VV+((transport::wasserstein1d(unlist(Tibble_VAR[[i]][,1]), mean_distr[,1], p = 2,
     #                               wa = Tibble_VAR[[i]]$freq, wb = mean_distr$freq))^2)*w[i]
-    tmp<-((Wass1d_discrete_2(unlist(Tibble_VAR[[1]][[i]][,1]), mean_distr[,1],  
+    tmp<-((Wass1d_discrete_2(unlist(Tibble_VAR[[1]][[i]][,1]), mean_distr[,1],
                                wa = Tibble_VAR[[1]][[i]][["freq"]], wb = mean_distr$freq))^2)
 #    print(tmp)
     VV<-VV+tmp*w[i]
@@ -250,7 +249,7 @@ covariance_Wass_discrete<-function( Tibble_VAR1,
   Tibble_VAR1<-tibble(Tibble_VAR1)
   Tibble_VAR2<-tibble(Tibble_VAR2)
   n<-nrow(Tibble_VAR1)
-  
+
   if(length(w)==1){
     w<-rep(1/n,n)
   }else{
@@ -270,7 +269,7 @@ covariance_Wass_discrete<-function( Tibble_VAR1,
                                         mean_distr2,
                                         md1,md2,sd1,sd2)*sd1*sd2+md1*md2
   CV <- 0
-  
+
   for(i in 1:n){
     mxi<-sum(Tibble_VAR1[[1]][[i]][[1]]*Tibble_VAR1[[1]][[i]][["freq"]])
     myi<-sum(Tibble_VAR2[[1]][[i]][[1]]*Tibble_VAR2[[1]][[i]][["freq"]])
@@ -298,7 +297,7 @@ cov_mat_Wass_discr<-function(Tib){
     for(j in (i+1):ncol(Tib)){
       CVmat[i,j]<-CVmat[j,i]<-covariance_Wass_discrete(Tib[[i]],Tib[[j]])
     }
-    
+
   }
   CVmat[ncol(Tib),ncol(Tib)]<-variance_Wass_discrete(Tib[,ncol(Tib)])
   return(CVmat)
@@ -307,7 +306,7 @@ cov_mat_Wass_discr<-function(Tib){
 ## Correlation matrix ----
 corr_mat_Wass_discr<-function(Tib){
   cov_mat<-cov_mat_Wass_discr(Tib)
-  
+
   nr<-nrow(cov_mat)
   corr_mat<-diag(rep(1,nr))
   for(i in 1:(nr-1)){
@@ -321,7 +320,7 @@ corr_mat_Wass_discr<-function(Tib){
 # A second version for variance
 variance_Wass_discrete2<-function(Tibble_VAR,
                                   w=1,rounddec=5,
-                                  given_mean=F, 
+                                  given_mean=F,
                                   mean_distr=NA){#NON CONSIDERO I PESI!! Da aggiustare
   n<-length(Tibble_VAR)
   if(length(w)==1){
@@ -335,15 +334,15 @@ variance_Wass_discrete2<-function(Tibble_VAR,
   md <- sum(mean_distr[,1]*mean_distr$freq)
   sd <- sqrt(sum((mean_distr[,1])^2*mean_distr$freq)-md^2)
   MDQ<-  sd^2+md^2
-  
+
   VV<-0
   for(i in 1:n){
     mxi<-sum(Tibble_VAR[[i]][,1]*Tibble_VAR[[i]]$freq)
     sxi<-sqrt(sum((Tibble_VAR[[i]][,1])^2*Tibble_VAR[[i]]$freq)-mxi^2)
     # browser()
     xiq <- sxi^2+mxi^2
-    
-    
+
+
     VV<-VV+xiq*w[i]
   }
   VV<-VV-MDQ
@@ -362,47 +361,47 @@ MAT_DIST_2W_discrete<-function(Tib,labels=c(1:nrow(Tib))){
   for (i1 in 1:(n-1)){
     for (i2 in (i1+1):n){
       for(j in 1:ncol(Tib)){
-        
+
         dmat[i1,i2]<-dmat[i1,i2]+
           #  transport::wasserstein1d
           Wass1d_discrete_2(#unname(
             Tib[i1,j][[1]][,1][[1]],#),
             #unname(
-            Tib[i2,j][[1]][,1][[1]],#), 
-            #p = 2, 
-            wa = Tib[i1,j][[1]]$freq, 
+            Tib[i2,j][[1]][,1][[1]],#),
+            #p = 2,
+            wa = Tib[i1,j][[1]]$freq,
             wb = Tib[i2,j][[1]]$freq)^2
-        
+
       }
       dmat[i2,i1]<-dmat[i1,i2]
     }
-    
+
   }
-  
-  
+
+
   dmat<-sqrt(dmat)
   return(dmat)
 }
 MAT_DIST_2W_discrete_and_C<-function(Tib,labels=c(1:nrow(Tib))){
   n<-nrow(Tib)
   dmat<-dmatC(Tib)
-  
-  
+
+
   rownames(dmat)<-as.character(labels)
   colnames(dmat)<-rownames(dmat)
   return(dmat)
-  
+
 }
 ### The fastest function for matrix of distances of discrete distributions ----
 MAT_DIST_2W_discrete_and_C2<-function(Tib,labels=c(1:nrow(Tib))){
   n<-nrow(Tib)
   dmat<-dmatC2(Tib)
-  
-  
+
+
   rownames(dmat)<-as.character(labels)
   colnames(dmat)<-rownames(dmat)
   return(dmat)
-  
+
 }
 ## the oldes and slower one
 MAT_DIST_2W_discrete_ori<-function(Tib,labels=c(1:nrow(Tib))){
@@ -413,23 +412,23 @@ MAT_DIST_2W_discrete_ori<-function(Tib,labels=c(1:nrow(Tib))){
   for (i1 in 1:(n-1)){
     for (i2 in (i1+1):n){
       for(j in 1:ncol(Tib)){
-        
+
         dmat[i1,i2]<-dmat[i1,i2]+
           transport::wasserstein1d(#unname(
             Tib[i1,j][[1]][,1][[1]],#),
             #unname(
-            Tib[i2,j][[1]][,1][[1]],#), 
-            p = 2, 
-            wa = Tib[i1,j][[1]]$freq, 
+            Tib[i2,j][[1]][,1][[1]],#),
+            p = 2,
+            wa = Tib[i1,j][[1]]$freq,
             wb = Tib[i2,j][[1]]$freq)^2
-        
+
       }
       dmat[i2,i1]<-dmat[i1,i2]
     }
-    
+
   }
-  
-  
+
+
   dmat<-sqrt(dmat)
   return(dmat)
 }
@@ -453,7 +452,7 @@ PLOT_tib_discrete<-function(Tib,labels=1){
         DF<-rbind(DF,TDF)
       }
     }
-    
+
   }
   return(DF)
 }
@@ -474,8 +473,8 @@ conta<-function(cub,cua){
   }
   return(counts)
 }
-Wass1d_discrete_2<-function (a, b,  
-                             wa = NULL, wb = NULL) 
+Wass1d_discrete_2<-function (a, b,
+                             wa = NULL, wb = NULL)
 {
   m <- length(a)
   n <- length(b)
@@ -512,15 +511,15 @@ Wass1d_discrete_2<-function (a, b,
   return(areap)
 }
 
-# 
+#
 # microbenchmark::microbenchmark(a=transport::wasserstein1d(unname(unlist(Tib[i1,j][[1]][,1])),
-#                                                           unname(unlist(Tib[i2,j][[1]][,1])), 
-#                                                           p = 2, 
-#                                                           wa = Tib[i1,j][[1]]$freq, 
+#                                                           unname(unlist(Tib[i2,j][[1]][,1])),
+#                                                           p = 2,
+#                                                           wa = Tib[i1,j][[1]]$freq,
 #                                                           wb = Tib[i2,j][[1]]$freq)^2,
 #                                b=Wass1d_discrete_2(unname(unlist(Tib[i1,j][[1]][,1])),
-#                                                    unname(unlist(Tib[i2,j][[1]][,1])), 
-#                                                    wa = Tib[i1,j][[1]]$freq, 
+#                                                    unname(unlist(Tib[i2,j][[1]][,1])),
+#                                                    wa = Tib[i1,j][[1]]$freq,
 #                                                    wb = Tib[i2,j][[1]]$freq)^2)
 
 # VISUALIZATION TECNIQUES -------
@@ -595,7 +594,7 @@ WD2_Kmeans<-function(Tib,k, nrep=5,labels=c(1:nrow(Tib))){
     }
       #-end core kmeans----------------------------
     }
- return(BEST_SOL)  
+ return(BEST_SOL)
 }
 
 KM_base<-function(Tib,k,n,p,maxiter=100){
@@ -603,10 +602,10 @@ KM_base<-function(Tib,k,n,p,maxiter=100){
   # n<-nrow(Tib) #the number of rows
   # p<-ncol(Tib) #the number of variables
   # k<-ceiling(k)
-  # 
+  #
   # if(k<2) stop("The number of cluster (k) must be grater than 1")
   # BestSolCrit=Inf
-  
+
   # INITIALIZE CENTERS
   ActualCrit=Inf
   # sample k centers
@@ -635,7 +634,7 @@ KM_base<-function(Tib,k,n,p,maxiter=100){
     #     }
     #   }
     # }
-    
+
     Dist_to_prot<-DiToCen_C(Tib,
               centers,
               n, p, k)
@@ -648,7 +647,7 @@ KM_base<-function(Tib,k,n,p,maxiter=100){
       STOP<-T
       print("Empty cluster found!")
     }
-   
+
     if(!EMPTY_CLUST){
       ## CENTER
       #compute new centers
@@ -657,14 +656,14 @@ KM_base<-function(Tib,k,n,p,maxiter=100){
           centers[[j]][[clu]] <- tibble(mean_bargraph(Tib[which(IDclu==clu),j]))
         }
       }
-      
+
       ## CRITERION
       # compute criterion
       Min_d_to_prot<-rowMins(Dist_to_prot)
       Criterion<-sum(Min_d_to_prot)
-      
+
       ## CHECKS
-      
+
       if (((ActualCrit-Criterion)>TOL)&(iter<maxiter)){
         print(paste0("IT ---> ",iter," Crit --->", Criterion))
         ActualCrit <- Criterion
@@ -686,7 +685,7 @@ WD2_HC<-function(Tib,method = "complete",labels=c(1:nrow(Tib))){
 }
 
 
-  
+
   ### Regression  ----
   ### MFA ----
 
@@ -702,7 +701,7 @@ Wass_SQ_discr_MULT<-function(Row1,Row2){
     m2<-sum(Row2[[i]][[1]][[1]]*Row2[[i]][[1]]$freq/sum(Row2[[i]][[1]]$freq))
     M1<-c(M1,m1)
     M2<-c(M2,m2)
-    
+
     dm<-(m1-m2)^2
     s1<-sqrt(sum(Row1[[i]][[1]][[1]]^2*Row1[[i]][[1]]$freq/sum(Row1[[i]][[1]]$freq))-m1^2)
     s2<-sqrt(sum(Row2[[i]][[1]][[1]]^2*Row2[[i]][[1]]$freq/sum(Row2[[i]][[1]]$freq))-m2^2)
@@ -726,7 +725,7 @@ Transp_plots_MULT<-function(Row1,Row2,q=1000){
   ncols<-ncol(Row1)
   one_q<-ref_q<-IDV<-numeric()
   for(i in 1:ncols){
-    
+
     #browser()
     one<-Row1[[i]][[1]]
     ref<-Row2[[i]][[1]]
@@ -743,18 +742,18 @@ Transp_plots_MULT<-function(Row1,Row2,q=1000){
 Cronbach_discr <-function(TibbM){
   cov_m <- cov_mat_Wass_discr(TibbM)
   Bstat <-m_sd_skew_NestTibb_nol(TibbM)
-  
+
   cov_means<-cov(Bstat$means)*(nrow(TibbM)-1)/nrow(TibbM)
-  
+
   cov_distrib <- cov_m -cov_means
-  
+
   p <- ncol(TibbM)
-  
+
   cro_al<-p/(p-1)*(1-  sum(diag(cov_m))/sum(cov_m))
   cro_al_m<-p/(p-1)*(1-  sum(diag(cov_means))/sum(cov_means))
     cro_al_v<-p/(p-1)*(1-  sum(diag(cov_distrib))/sum(cov_distrib))
-  
-  
+
+
   cro_without<-cro_without_m<-cro_without_v<-numeric()
   for (j in 1:p){
     cro_without<-c(cro_without,
@@ -764,7 +763,7 @@ Cronbach_discr <-function(TibbM){
     cro_without_v<-c(cro_without_v,
                    (p-1)/(p-2)*(1-  sum(diag(cov_distrib[-j,-j]))/sum(cov_distrib[-j,-j])))
   }
-  res<-list(cro_al=c(GLOB=cro_al,AVE=cro_al_m,VAR=cro_al_v), 
+  res<-list(cro_al=c(GLOB=cro_al,AVE=cro_al_m,VAR=cro_al_v),
                      cro_without=cro_without,
                      cro_without_m=cro_without_m,
                      cro_without_v=cro_without_v,

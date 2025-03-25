@@ -191,7 +191,7 @@ setMethod(
   function(object) {
     if (!is.null(object@x) || !is.null(object@p)) {
       w<-c(object@p[1],diff(object@p))
-      s <- sqrt(sum(object@x^2*w-(object@x*w)^2))
+      s <- sqrt(sum(object@x^2*w)-(sum(object@x*w))^2)
       #   #resu=crwtransform(object)
       #   c=0.5*(object@x[2:length(object@x)]+object@x[1:(length(object@x)-1)])
       #   r=0.5*(object@x[2:length(object@x)]-object@x[1:(length(object@x)-1)]) # resu[[2]]
@@ -705,13 +705,11 @@ setMethod(
     p_all<-sort(unique(c(pa,pb)))
     a_new<-compQ(object1,p = p_all)
     b_new<-sapply(p_all,FUN = function(x)HistDAWass::compQ(object2,x))
+
     ww<-diff(p_all)
-    amc<-b_new[1:(length(b_new)-1)]-a_new[1:(length(b_new)-1)]
+    amc<-b_new[1:(length(b_new)-1)]-a_new[2:(length(b_new))]
     bma<-diff(b_new)
-    D<-sum((amc^2+1/3*bma+amc*bma)*ww)
-
-    browser()
-
+    D<-sum((amc^2+1/3*bma^2+amc*bma)*ww)
     if (details) {
       DC <- (object1@m - object2@m)^2
       DS <- (object1@s - object2@s)^2
@@ -819,7 +817,7 @@ setMethod("rQQ",
             return(rQQ)
           }
 )
-## ---- Show overridding for distributionD and MatH ----
+## ---- Show overridding for distributionD and MatD ----
 #' Method show for distributionD
 #' @name show
 #' @rdname show-distributionD-methods
