@@ -1,7 +1,7 @@
 Package: wassdda
 Type: Package
 Title: Distributional Data Analysis Using Wasserstein Distance
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person(
       "Antonio", "Irpino",
@@ -18,10 +18,9 @@ URL: https://github.com/Airpino/wassdda
 BugReports: https://github.com/Airpino/wassdda/bugreports
 Imports:
     Rcpp (>= 1.0.14),
+    RcppArmadillo,
     FactoMineR,
     MASS,
     ggplot2,
     dplyr
-Depends:
-    HistDAWass
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppArmadillo

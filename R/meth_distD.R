@@ -716,6 +716,8 @@ setMethod(
 
       DR <- ifelse(abs(D - DC - DS) < 1e-30, yes = 0, no = abs(D - DC - DS))
       rho <- 1-DR/(2*object1@s*object2@s)### non funziona qui ---------
+      browser()
+
       if (rho < 0) rho <- 0
       resu <- c(D, DC, DS, DR, rho)
       names(resu) <- c("SQ_W_dist", "POSITION", "SIZE", "SHAPE", "rQQ")
@@ -728,7 +730,7 @@ setMethod(
 )
 
 
-
+## DotpW ---------
 
 #' Method \code{dotpW}
 #' @name dotpW
@@ -765,10 +767,44 @@ setGeneric("dotpW", function(e1, e2) standardGeneric("dotpW")) # dotproduct from
 setMethod("dotpW",
           signature(e1 = "distributionD", e2 = "distributionD"),
           definition = function(e1, e2) {
+            p_all<-sort(unique(c(e1@p,e2@p)))
+            q1<-compQ(e1,p = p_all)
+            q2<-compQ(e2,p = p_all)
 
-            return(c_dotpW(e1, e2))
+            ww<-c(p_all[1],diff(p_all))
+            dotp<-sum(q1*q2*ww)
+
+            return(dotp)
           }
 )
+setMethod("dotpW",
+          signature(e1 = "distributionH", e2 = "distributionD"),
+          definition = function(e1, e2) { ### dotpW HD -------
+            p_all<-sort(unique(c(e1@p,e2@p)))
+            q1<-sapply(p_all,FUN = function(x)HistDAWass::compQ(e1,x))
+            q2<-compQ(e2,p = p_all)
+
+            ww<-diff(p_all)
+            dotp<-sum((diff(q1)/2+q1[1:(length(q1)-1)])*q2[2:(length(q1))]*ww)
+
+            return(dotp)
+          }
+)
+setMethod("dotpW",
+          signature(e1 = "distributionD", e2 = "distributionH"),
+          definition = function(e1, e2) { ### dotpW HD -------
+            p_all<-sort(unique(c(e1@p,e2@p)))
+            q1<-sapply(p_all,FUN = function(x)HistDAWass::compQ(e2,x))
+            q2<-compQ(e1,p = p_all)
+
+            ww<-diff(p_all)
+
+            dotp<-sum((diff(q1)/2+q1[1:(length(q1)-1)])*q2[2:(length(q2))]*ww)
+
+            return(dotp)
+          }
+)
+
 #' @rdname dotpW-methods
 #' @aliases dotpW,distributionD-method
 #' @description The dot product of a number (considered as an impulse distribution function) and a distribution
@@ -811,7 +847,21 @@ setMethod(
 
 #' @export rQQ
 setMethod("rQQ",
-          signature(e1 = "distributionD", e2 = "distributionD"),
+          signature(e1 = "distributionD",e2="distributionD"),
+          definition = function(e1, e2) {
+            rQQ <- (dotpW(e1, e2) - e1@m * e2@m) / (e1@s * e2@s)
+            return(rQQ)
+          }
+)
+setMethod("rQQ",
+          signature(e1 = "distributionH",e2="distributionD"),
+          definition = function(e1, e2) {
+            rQQ <- (dotpW(e1, e2) - e1@m * e2@m) / (e1@s * e2@s)
+            return(rQQ)
+          }
+)
+setMethod("rQQ",
+          signature(e1 = "distributionD",e2="distributionH"),
           definition = function(e1, e2) {
             rQQ <- (dotpW(e1, e2) - e1@m * e2@m) / (e1@s * e2@s)
             return(rQQ)

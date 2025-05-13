@@ -2,30 +2,206 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 countC <- function(cub, cua) {
-    .Call('_wassdda_countC', PACKAGE = 'wassdda', cub, cua)
+    .Call(`_wassdda_countC`, cub, cua)
 }
 
 stl_sort <- function(x) {
-    .Call('_wassdda_stl_sort', PACKAGE = 'wassdda', x)
+    .Call(`_wassdda_stl_sort`, x)
 }
 
 DW2_discr_C <- function(a, b, wa, wb) {
-    .Call('_wassdda_DW2_discr_C', PACKAGE = 'wassdda', a, b, wa, wb)
+    .Call(`_wassdda_DW2_discr_C`, a, b, wa, wb)
 }
 
 dmatC <- function(T) {
-    .Call('_wassdda_dmatC', PACKAGE = 'wassdda', T)
+    .Call(`_wassdda_dmatC`, T)
 }
 
 dmatC2 <- function(T) {
-    .Call('_wassdda_dmatC2', PACKAGE = 'wassdda', T)
+    .Call(`_wassdda_dmatC2`, T)
 }
 
 DiToCen_C <- function(Tib, Cen, n, p, k) {
-    .Call('_wassdda_DiToCen_C', PACKAGE = 'wassdda', Tib, Cen, n, p, k)
+    .Call(`_wassdda_DiToCen_C`, Tib, Cen, n, p, k)
 }
 
 TransposeTib_C <- function(Tib) {
-    .Call('_wassdda_TransposeTib_C', PACKAGE = 'wassdda', Tib)
+    .Call(`_wassdda_TransposeTib_C`, Tib)
+}
+
+whichLowerEQThanX <- function(x, y) {
+    .Call(`_wassdda_whichLowerEQThanX`, x, y)
+}
+
+COMP_Q_VECT <- function(x, p, vp) {
+    .Call(`_wassdda_COMP_Q_VECT`, x, p, vp)
+}
+
+concatenate_and_sort <- function(a, b) {
+    .Call(`_wassdda_concatenate_and_sort`, a, b)
+}
+
+REGISTER2 <- function(a, b) {
+    .Call(`_wassdda_REGISTER2`, a, b)
+}
+
+PREPARE_A_VEC_MAT <- function(MAT) {
+    .Call(`_wassdda_PREPARE_A_VEC_MAT`, MAT)
+}
+
+MEDIA_V <- function(MAT, wei) {
+    .Call(`_wassdda_MEDIA_V`, MAT, wei)
+}
+
+SSQ_RCPP <- function(MAT, wei) {
+    .Call(`_wassdda_SSQ_RCPP`, MAT, wei)
+}
+
+COV_RCPP <- function(MAT, wei) {
+    .Call(`_wassdda_COV_RCPP`, MAT, wei)
+}
+
+CORR_RCPP <- function(MAT, wei) {
+    .Call(`_wassdda_CORR_RCPP`, MAT, wei)
+}
+
+M_STD_H <- function(o) {
+    .Call(`_wassdda_M_STD_H`, o)
+}
+
+c_MM_L2_SQ_WASS_D <- function(MM) {
+    .Call(`_wassdda_c_MM_L2_SQ_WASS_D`, MM)
+}
+
+c_DISTA_M <- function(MM, Protos) {
+    .Call(`_wassdda_c_DISTA_M`, MM, Protos)
+}
+
+c_DISTA_M2 <- function(MM, Protos) {
+    .Call(`_wassdda_c_DISTA_M2`, MM, Protos)
+}
+
+c_ComputeFASTSSQ <- function(subMM) {
+    .Call(`_wassdda_c_ComputeFASTSSQ`, subMM)
+}
+
+c_Compute_M_from_MM <- function(subMM) {
+    .Call(`_wassdda_c_Compute_M_from_MM`, subMM)
+}
+
+c_Fast_D_Mat <- function(MM) {
+    .Call(`_wassdda_c_Fast_D_Mat`, MM)
+}
+
+c_Prepare <- function(x, simplify, qua, standardize) {
+    .Call(`_wassdda_c_Prepare`, x, simplify, qua, standardize)
+}
+
+c_Prepare2 <- function(x, simplify, qua, standardize) {
+    .Call(`_wassdda_c_Prepare2`, x, simplify, qua, standardize)
+}
+
+c_ComputeFastSSQ <- function(subMM) {
+    .Call(`_wassdda_c_ComputeFastSSQ`, subMM)
+}
+
+c_MOM_D <- function(o) {
+    .Call(`_wassdda_c_MOM_D`, o)
+}
+
+c_MOM_MAT <- function(x) {
+    .Call(`_wassdda_c_MOM_MAT`, x)
+}
+
+c_STEP_2_ADA_KMEANS <- function(MM, proto, schema, memb) {
+    .Call(`_wassdda_c_STEP_2_ADA_KMEANS`, MM, proto, schema, memb)
+}
+
+Provec <- function(x) {
+    .Call(`_wassdda_Provec`, x)
+}
+
+c_cen_rad <- function(x) {
+    .Call(`_wassdda_c_cen_rad`, x)
+}
+
+c_STEP_2_2_WEIGHTS_ADA_KMEANS <- function(D1, D2, PROSUM, schema, theta) {
+    .Call(`_wassdda_c_STEP_2_2_WEIGHTS_ADA_KMEANS`, D1, D2, PROSUM, schema, theta)
+}
+
+c_STEP_3_AFFECT_ADA_KMEANS <- function(lambdas, dIpro_m, dIpro_v, ind, k, vars) {
+    .Call(`_wassdda_c_STEP_3_AFFECT_ADA_KMEANS`, lambdas, dIpro_m, dIpro_v, ind, k, vars)
+}
+
+c_COMP_SEVERAL_MEANS <- function(y, w) {
+    .Call(`_wassdda_c_COMP_SEVERAL_MEANS`, y, w)
+}
+
+c_COMP_SEVERAL_MEANS_M_D <- function(y, wM, wDis) {
+    .Call(`_wassdda_c_COMP_SEVERAL_MEANS_M_D`, y, wM, wDis)
+}
+
+c_Wass_Q_dist_DET <- function(o1, o2) {
+    .Call(`_wassdda_c_Wass_Q_dist_DET`, o1, o2)
+}
+
+c_WH_ADPT_KMEANS_TOTALSSQ <- function(x, memb, m, lambdas, proto) {
+    .Call(`_wassdda_c_WH_ADPT_KMEANS_TOTALSSQ`, x, memb, m, lambdas, proto)
+}
+
+c_WH_ADPT_FCMEANS_SSQ <- function(x, memb, m, lambdas, proto, theta) {
+    .Call(`_wassdda_c_WH_ADPT_FCMEANS_SSQ`, x, memb, m, lambdas, proto, theta)
+}
+
+c_ADA_F_WHEIGHT <- function(distances, k, vars, ind, schema, weight_sys, theta, m) {
+    .Call(`_wassdda_c_ADA_F_WHEIGHT`, distances, k, vars, ind, schema, weight_sys, theta, m)
+}
+
+c_MEMB_comp <- function(ind, vars, k, lambdas, diINDtoPROT_M, diINDtoPROT_V, m, theta) {
+    .Call(`_wassdda_c_MEMB_comp`, ind, vars, k, lambdas, diINDtoPROT_M, diINDtoPROT_V, m, theta)
+}
+
+c_ComputeFastSSQ_Fuzzy_1V <- function(M, memb, m) {
+    .Call(`_wassdda_c_ComputeFastSSQ_Fuzzy_1V`, M, memb, m)
+}
+
+c_ComputeFastSSQ_Fuzzy <- function(MM, memb, m, nr, nc) {
+    .Call(`_wassdda_c_ComputeFastSSQ_Fuzzy`, MM, memb, m, nr, nc)
+}
+
+c_ComputeFast_L2_SQ_WASS_DMAT <- function(MM, prot) {
+    .Call(`_wassdda_c_ComputeFast_L2_SQ_WASS_DMAT`, MM, prot)
+}
+
+c_DISTA_ADA <- function(x, MM, proto, vars, ind, k, memb, m, schema) {
+    .Call(`_wassdda_c_DISTA_ADA`, x, MM, proto, vars, ind, k, memb, m, schema)
+}
+
+c_ComputeFast_L2_SQ_WASS_DMAT_simple <- function(MM, prot) {
+    .Call(`_wassdda_c_ComputeFast_L2_SQ_WASS_DMAT_simple`, MM, prot)
+}
+
+c_ComputeFast_Fuzzy_TOT_SSQ <- function(MM, prot, memb, m) {
+    .Call(`_wassdda_c_ComputeFast_Fuzzy_TOT_SSQ`, MM, prot, memb, m)
+}
+
+c_WH_ADPT_FCMEANS_SSQ_FAST <- function(MM, x, memb, m, lambdas, proto, theta) {
+    .Call(`_wassdda_c_WH_ADPT_FCMEANS_SSQ_FAST`, MM, x, memb, m, lambdas, proto, theta)
+}
+
+c_WH_ADPT_FCMEANS_SSQ_FAST_NEW <- function(DM, DV, memb, m, lambdas, theta) {
+    .Call(`_wassdda_c_WH_ADPT_FCMEANS_SSQ_FAST_NEW`, DM, DV, memb, m, lambdas, theta)
+}
+
+c_dotpW <- function(o1, o2) {
+    .Call(`_wassdda_c_dotpW`, o1, o2)
+}
+
+c_PROTO_KOHONEN <- function(proto, k, ind, MM, vars, KT, IDX) {
+    .Call(`_wassdda_c_PROTO_KOHONEN`, proto, k, ind, MM, vars, KT, IDX)
+}
+
+c_Wass_Q_dist_2P <- function(o1, o2) {
+    .Call(`_wassdda_c_Wass_Q_dist_2P`, o1, o2)
 }
 
